@@ -7,23 +7,23 @@
 
 const { parse, lint } = require('../dist/index.js')
 
-console.log('🔍 Running health check for aoe2-rms-parser...\n')
+console.log('Running health check for aoe2-rms-parser...\n')
 
 // Test 1: Basic parsing
 console.log('1. Testing basic parsing...')
 try {
   const { ast, errors } = parse('<PLAYER_SETUP>\nrandom_placement')
   if (errors.length > 0) {
-    console.error('❌ Basic parsing failed:', errors)
+    console.error('ERROR: Basic parsing failed:', errors)
     process.exit(1)
   }
   if (!ast) {
-    console.error('❌ No AST generated')
+    console.error('ERROR: No AST generated')
     process.exit(1)
   }
-  console.log('✅ Basic parsing works')
+  console.log('PASS: Basic parsing works')
 } catch (error) {
-  console.error('❌ Basic parsing error:', error.message)
+  console.error('ERROR: Basic parsing error:', error.message)
   process.exit(1)
 }
 
@@ -33,12 +33,12 @@ try {
   const { ast } = parse('<PLAYER_SETUP>\nrandom_placement')
   const lintErrors = lint(ast)
   if (!Array.isArray(lintErrors)) {
-    console.error('❌ Linting did not return an array')
+    console.error('ERROR: Linting did not return an array')
     process.exit(1)
   }
-  console.log('✅ Linting works')
+  console.log('PASS: Linting works')
 } catch (error) {
-  console.error('❌ Linting error:', error.message)
+  console.error('ERROR: Linting error:', error.message)
   process.exit(1)
 }
 
@@ -47,12 +47,12 @@ console.log('3. Testing error handling...')
 try {
   const { errors } = parse('invalid syntax here')
   if (!Array.isArray(errors)) {
-    console.error('❌ Error handling did not return an array')
+    console.error('ERROR: Error handling did not return an array')
     process.exit(1)
   }
-  console.log('✅ Error handling works')
+  console.log('PASS: Error handling works')
 } catch (error) {
-  console.error('❌ Error handling error:', error.message)
+  console.error('ERROR: Error handling error:', error.message)
   process.exit(1)
 }
 
@@ -66,11 +66,11 @@ const endTime = performance.now()
 const avgTime = (endTime - startTime) / 100
 
 if (avgTime > 10) {
-  console.warn(`⚠️  Performance warning: Average parse time is ${avgTime.toFixed(2)}ms (expected < 10ms)`)
+  console.warn(`WARNING: Performance warning: Average parse time is ${avgTime.toFixed(2)}ms (expected < 10ms)`)
 } else {
-  console.log('✅ Performance is good')
+  console.log('PASS: Performance is good')
 }
 
-console.log('\n🎉 All health checks passed!')
-console.log(`📊 Average parse time: ${avgTime.toFixed(2)}ms`)
-console.log('📦 Package is ready for use!')
+console.log('\nSUCCESS: All health checks passed!')
+console.log(`Average parse time: ${avgTime.toFixed(2)}ms`)
+console.log('Package is ready for use!')

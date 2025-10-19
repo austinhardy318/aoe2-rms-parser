@@ -42,7 +42,7 @@ jspm_packages
 /src/parse/grammar.ts
 /src/lib/generated
 
-# Coverage reports
+# Coverage reports (generated in CI)
 coverage/
 .nyc_output/
 

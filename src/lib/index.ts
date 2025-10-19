@@ -8,7 +8,9 @@ try {
   aoc = require('./generated/lib.aoc')
   dlc = require('./generated/lib.dlc')
   userpatch = require('./generated/lib.userpatch')
-} catch (e) {} // tslint:disable-line:no-empty
+} catch {
+  // Ignore errors - these files don't exist before first compilation
+}
 
 export { aoc, dlc, userpatch }
 export { definitions as aocCommands } from './lib.aoc.commands'

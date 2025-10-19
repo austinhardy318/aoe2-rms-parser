@@ -42,10 +42,10 @@ export const lexer = states({
 export function formatLexError (err: Error & { token: Token }): TextSpanError {
   // When moo gets an unknown token, it gives up and returns
   // everything to eof as a single 'invalid' token. Let's at least separate the first word.
-  let invalidTokenEndIndex = Math.min(err.token.value.length, ...[' ', '\r\n', '\n']
+  const invalidTokenEndIndex = Math.min(err.token.value.length, ...[' ', '\r\n', '\n']
     .map(x => err.token.value.indexOf(x))
     .filter(x => x !== -1))
-  let invalidTokenEndCol = err.token.col + invalidTokenEndIndex
+  const invalidTokenEndCol = err.token.col + invalidTokenEndIndex
 
   return {
     name: 'ParseError',

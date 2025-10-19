@@ -1,7 +1,8 @@
 The MIT License (MIT)
 =====================
 
-Copyright © 2016-present Mangudai contributors
+Copyright © 2016-present Mangudai contributors (original)
+Copyright © 2024 Austin (modernized)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

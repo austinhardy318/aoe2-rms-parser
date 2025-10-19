@@ -35,6 +35,9 @@ jobs:
     - name: Build package
       run: npm run build
 
+    - name: Run health check
+      run: npm run health-check
+
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
       if: matrix.node-version == 20
@@ -49,6 +52,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
     - name: Build Docker image
       run: docker build -t aoe2-rms-parser .
 
@@ -57,3 +63,6 @@ jobs:
 
     - name: Run build in Docker
       run: docker-compose run build
+
+    - name: Run health check in Docker
+      run: docker-compose run test node scripts/health-check.js

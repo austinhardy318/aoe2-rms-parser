@@ -11,7 +11,9 @@ try {
     exports.dlc = dlc = require('./generated/lib.dlc');
     exports.userpatch = userpatch = require('./generated/lib.userpatch');
 }
-catch (e) { } // tslint:disable-line:no-empty
+catch {
+    // Ignore errors - these files don't exist before first compilation
+}
 var lib_aoc_commands_1 = require("./lib.aoc.commands");
 Object.defineProperty(exports, "aocCommands", { enumerable: true, get: function () { return lib_aoc_commands_1.definitions; } });
 var lib_dlc_commands_1 = require("./lib.dlc.commands");
