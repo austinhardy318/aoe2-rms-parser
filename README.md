@@ -5,6 +5,10 @@
 [![ESLint](https://img.shields.io/badge/ESLint-9+-purple.svg)](https://eslint.org/)
 [![Docker](https://img.shields.io/badge/Docker-supported-blue.svg)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
+[![codecov](https://codecov.io/gh/austinhardy318/aoe2-rms-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/austinhardy318/aoe2-rms-parser)
+[![GitHub Actions](https://github.com/austinhardy318/aoe2-rms-parser/workflows/CI/badge.svg)](https://github.com/austinhardy318/aoe2-rms-parser/actions)
+[![npm version](https://img.shields.io/npm/v/aoe2-rms-parser.svg)](https://www.npmjs.com/package/aoe2-rms-parser)
+[![npm downloads](https://img.shields.io/npm/dm/aoe2-rms-parser.svg)](https://www.npmjs.com/package/aoe2-rms-parser)
 
 > Modern parser and linter for Age of Empires 2 Random Map Scripts
 
