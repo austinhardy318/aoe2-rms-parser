@@ -12,7 +12,13 @@
 
 > Modern parser and linter for Age of Empires 2 Random Map Scripts
 
-TypeScript parser and linter for [Random Map Scripts](http://aok.heavengames.com/cgi-bin/forums/display.cgi?action=ct&f=28,42485,,30) (RMS) for the [Age of Empires II](https://en.wikipedia.org/wiki/Age_of_Empires_II) video game. This is a modernized fork of the original [Mangudai parser](https://github.com/mangudai/parser) with updated dependencies, improved build system, and enhanced developer experience.
+TypeScript parser and linter for [Random Map Scripts](http://aok.heavengames.com/cgi-bin/forums/display.cgi?action=ct&f=28,42485,,30)
+ (RMS) for the
+[Age of Empires II](https://en.wikipedia.org/wiki/Age_of_Empires_II)
+video game.
+This is a modernized fork of the original [Mangudai parser](https://github.com/mangudai/parser)
+with updated dependencies,
+improved build system, and enhanced developer experience.
 
 ## Key Features
 
@@ -33,12 +39,13 @@ TypeScript parser and linter for [Random Map Scripts](http://aok.heavengames.com
 
 ## Extensions
 
-- [VS Code extension](https://marketplace.visualstudio.com/items?itemName=deltaidea.aoe2-rms) ([repo](https://github.com/austinhardy318/vscode-aoe2-rms))
-- [Sublime Text package](https://packagecontrol.io/packages/AoE2%20RMS%20Syntax%20Highlighting) ([repo](https://github.com/mangudai/sublime-text))
+- [VS Code extension](https://marketplace.visualstudio.com/items?itemName=deltaidea.aoe2-rms)
+([repo](https://github.com/austinhardy318/vscode-aoe2-rms))
 
 ## Installation
 
-aoe2-rms-parser is published as an [NPM](https://docs.npmjs.com/getting-started/what-is-npm) package compatible with [Node.js](https://nodejs.org/en/) and browsers.
+aoe2-rms-parser is published as an [NPM](https://docs.npmjs.com/getting-started/what-is-npm)
+package compatible with [Node.js](https://nodejs.org/en/) and browsers.
 
 ```bash
 npm install aoe2-rms-parser
@@ -46,7 +53,10 @@ npm install aoe2-rms-parser
 
 ### Browser Usage
 
-For browser environments, use a bundler like [Webpack](https://webpack.js.org), [Rollup](https://rollupjs.org/), or [Vite](https://vitejs.dev/):
+For browser environments, use a bundler like
+[Webpack](https://webpack.js.org),
+[Rollup](https://rollupjs.org/), or
+[Vite](https://vitejs.dev/):
 
 ```bash
 # With Webpack
@@ -59,13 +69,15 @@ npm install --save-dev rollup @rollup/plugin-node-resolve
 npm install --save-dev vite
 ```
 
-The package is compiled to ES2022 and bundled with esbuild for optimal performance and compatibility.
+The package is compiled to ES2022 and bundled with esbuild for optimal performance
+and compatibility.
 
 ## Usage
 
 ### Basic Parsing
 
-Parse an RMS script into an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST):
+Parse an RMS script into an
+[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST):
 
 ```typescript
 import { parse, lint } from 'aoe2-rms-parser'
@@ -118,18 +130,22 @@ errors.forEach(error => {
 })
 ```
 
-aoe2-rms-parser is written in [TypeScript](https://www.typescriptlang.org/) and exports all relevant typings for full IDE support.
+aoe2-rms-parser is written in [TypeScript](https://www.typescriptlang.org/)
+and exports all relevant typings for full IDE support.
 
 ## API Reference
 
 ### `parse(script: string) => { ast: Script | null, errors: ParseError[] }`
 
-Parses an RMS script string and returns an Abstract Syntax Tree or null if parsing fails.
+Parses an RMS script string and returns an Abstract Syntax Tree or
+null if parsing fails.
 
 **Parameters:**
+
 - `script` - The RMS script content as a string
 
 **Returns:**
+
 - `ast` - The parsed Abstract Syntax Tree or null if parsing failed
 - `errors` - Array of parse errors if any occurred
 
@@ -138,9 +154,11 @@ Parses an RMS script string and returns an Abstract Syntax Tree or null if parsi
 Lints a parsed AST and returns an array of linting errors.
 
 **Parameters:**
+
 - `ast` - The parsed Abstract Syntax Tree
 
 **Returns:**
+
 - Array of linting errors found in the AST
 
 ### Types
@@ -162,7 +180,7 @@ The modernized parser offers significant performance improvements:
 
 ### Benchmark Results
 
-```
+``` text
 Large RMS file (50KB): ~0.2ms parse time
 Medium RMS file (10KB): ~0.1ms parse time
 Small RMS file (1KB): ~0.05ms parse time
@@ -219,7 +237,8 @@ docker-compose run dev
 
 ## Contributing
 
-This project is actively maintained and welcomes contributions! Here's how you can help:
+This project is actively maintained and welcomes contributions!
+Here's how you can help:
 
 ### Getting Started
 
@@ -243,6 +262,7 @@ This project is actively maintained and welcomes contributions! Here's how you c
 ### Reporting Issues
 
 Found a bug or have a feature request? Please open an issue with:
+
 - Clear description of the problem or feature
 - Steps to reproduce (for bugs)
 - Expected vs actual behavior

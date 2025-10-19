@@ -28,8 +28,9 @@ tsconfig.json
 src/tsconfig.json
 test/tsconfig.json
 
-# Documentation
-README.md
+# Documentation (keep essential files)
+# README.md - REMOVED (should be included)
+# LICENSE.md - REMOVED (should be included)
 MANGUDAI_PARSER_FORK_PLAN.md
 modernize-parser-fork.plan.md
 DOCKER_INTEGRATION_TESTING.md
