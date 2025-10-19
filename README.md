@@ -16,7 +16,7 @@ TypeScript parser and linter for [Random Map Scripts](http://aok.heavengames.com
  (RMS) for the
 [Age of Empires II](https://en.wikipedia.org/wiki/Age_of_Empires_II)
 video game.
-This is a modernized fork of the original [Mangudai parser](https://github.com/mangudai/parser)
+This is a modernized fork of the original [Mangudai parser](https://github.com/mangudai/mangudai)
 with updated dependencies,
 improved build system, and enhanced developer experience.
 
