@@ -5,6 +5,16 @@
  * Verifies that the package is working correctly
  */
 
+const fs = require('fs')
+const path = require('path')
+
+// Check if dist folder exists
+const distPath = path.join(__dirname, '..', 'dist', 'index.js')
+if (!fs.existsSync(distPath)) {
+  console.error('ERROR: dist/index.js not found. Please run "npm run build" first.')
+  process.exit(1)
+}
+
 const { parse, lint } = require('../dist/index.js')
 
 console.log('Running health check for aoe2-rms-parser...\n')

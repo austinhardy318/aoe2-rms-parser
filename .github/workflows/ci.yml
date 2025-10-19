@@ -34,9 +34,6 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Verify package.json
-      run: npm run health-check
-
     - name: Run linter
       run: npm run lint
 
@@ -45,6 +42,9 @@ jobs:
 
     - name: Run tests
       run: npm test
+
+    - name: Verify package integrity
+      run: npm run health-check
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
