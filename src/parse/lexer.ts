@@ -1,6 +1,14 @@
 import { states, Token } from 'moo'
 import { getBoundaries, TextSpanError } from '../tokenHelpers'
 
+export interface Lexer {
+  reset: (chunk: string, info: any) => void
+  next: () => Token | undefined
+  save: () => any
+  formatError: (token: Token) => string
+  has: (tokenType: string) => boolean
+}
+
 export const lexer = states({
   main: {
     eol: { match: /\s*\n\s*/, lineBreaks: true },

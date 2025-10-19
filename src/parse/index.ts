@@ -1,5 +1,5 @@
 import { Parser, Grammar } from 'nearley'
-import * as grammar from './grammar'
+import grammar from './grammar'
 import { ruleNodesMiddleware } from './nearleyMiddleware'
 import { Token, toCst } from './cst'
 import { toAst } from './ast'
@@ -39,7 +39,7 @@ export function parse (input: string): { errors: TextSpanError[], ast?: Script }
       ast: parsings[0],
       errors: []
     }
-  } catch (error) {
+  } catch (error: any) {
     let errorWithTextSpan: TextSpanError
     if (error && error.boundaries) {
       errorWithTextSpan = error
@@ -64,9 +64,24 @@ export function parse (input: string): { errors: TextSpanError[], ast?: Script }
 }
 
 export function formatParseError (err: Error & { token: Token }): TextSpanError {
+  const token = err.token
+  const line = token.line || 1
+  const col = token.col || 1
+  
+  let message = `Unexpected token '${token.value}' at line ${line}, column ${col}`
+  
+  // Add more helpful error messages based on token type
+  if (token.type === 'EOF') {
+    message = `Unexpected end of file at line ${line}, column ${col}. Expected more content.`
+  } else if (token.type === 'INVALID') {
+    message = `Invalid character '${token.value}' at line ${line}, column ${col}. Check for typos or unsupported characters.`
+  } else {
+    message = `Unexpected ${token.type} '${token.value}' at line ${line}, column ${col}. Expected a different token.`
+  }
+  
   return {
     name: 'ParseError',
-    message: `Unexpected token ${err.token.type}: '${err.token.value}'.`,
-    boundaries: getBoundaries(err.token)
+    message,
+    boundaries: getBoundaries(token)
   }
 }

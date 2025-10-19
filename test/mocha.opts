@@ -1,5 +1,0 @@
---recursive
---require ts-node/register
---require chai/register-should
---watch-extensions ts
-./test/**/*.spec.ts

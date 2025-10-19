@@ -1,7 +1,6 @@
-import { expect } from 'chai'
 import { readdirSync, readFileSync } from 'fs'
 import { basename, resolve } from 'path'
-import { parse } from '../lib'
+import { parse } from '../dist'
 
 const readSampleFile = (name: string) => readFileSync(resolve(__dirname, 'samples', name), 'utf8')
 const readSample = (name: string) => ({
@@ -17,7 +16,7 @@ describe('parse', () => {
     .forEach(({ name, script, correctAst }) => {
       it(`parses example ${name}`, () => {
         const result = parse(script)
-        expect(result).to.deep.equal(correctAst)
+        expect(result).toEqual(correctAst)
       })
     })
 })

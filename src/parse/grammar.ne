@@ -1,6 +1,10 @@
 @preprocessor typescript
-@{% const lexer = require('./lexer').lexer as Lexer; %}
+@{% const { lexer } = require('./lexer'); %}
 @lexer lexer
+
+@{% 
+// Export the NearleyRule interface
+%}
 
 Script -> __:? ((TopLevelLine %eol):* TopLevelLine %eol:?):? ((Section %eol):* Section %eol:?):?
 

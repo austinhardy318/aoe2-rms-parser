@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["esnext"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "commonjs",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noEmit": true
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "types": ["jest", "node"]
   },
   "include": [
     "./**/*.ts"

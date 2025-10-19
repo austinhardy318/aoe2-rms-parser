@@ -1,6 +1,6 @@
 import { cloneDeep, RecursiveArray } from 'lodash'
 import { Token } from 'moo'
-import { NearleyRule } from './grammar'
+import { NearleyRule } from './types'
 
 /**
  * Wraps all user-defined grammar rule results into objects so it's possible
@@ -12,7 +12,7 @@ import { NearleyRule } from './grammar'
 export function ruleNodesMiddleware (rules: NearleyRule[]): NearleyRule[] {
   return rules.map(cloneDeep).map(rule => {
     if (!rule.name.includes('$')) {
-      rule.postprocess = (parts): RuleNode => ({
+      rule.postprocess = (parts: any[]): RuleNode => ({
         type: rule.name,
         children: parts
       })

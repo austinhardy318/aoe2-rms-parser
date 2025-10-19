@@ -1,0 +1,15 @@
+node_modules
+dist
+lib
+coverage
+.git
+.gitignore
+README.md
+LICENSE.md
+*.log
+.DS_Store
+.vscode
+.idea
+*.swp
+*.swo
+*~

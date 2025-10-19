@@ -1,0 +1,47 @@
+services:
+  dev:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run build:watch
+
+  test:
+    build:
+      context: .
+      target: test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm test
+
+  build:
+    build:
+      context: .
+      target: build
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run build
+
+  lint:
+    build:
+      context: .
+      target: test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run lint
+
+  format:
+    build:
+      context: .
+      target: test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run format

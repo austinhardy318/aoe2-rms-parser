@@ -1,3 +1,4 @@
+# Development files
 .nyc_output
 .vscode
 coverage
@@ -6,3 +7,32 @@ src
 test
 .travis.yml
 tslint.json
+
+# Build artifacts
+*.tsbuildinfo
+*.log
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# CI/CD
+.github
+
+# Development configs
+eslint.config.mjs
+jest.config.js
+.prettierrc
+tsconfig.json
+src/tsconfig.json
+test/tsconfig.json
+
+# Documentation
+README.md
+MANGUDAI_PARSER_FORK_PLAN.md
+modernize-parser-fork.plan.md
+
+# Git
+.git
+.gitignore

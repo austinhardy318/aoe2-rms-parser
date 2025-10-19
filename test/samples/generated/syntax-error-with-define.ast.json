@@ -2,7 +2,7 @@
   "errors": [
     {
       "name": "ParseError",
-      "message": "Unexpected token rCurly: '}'.",
+      "message": "Unexpected rCurly '}' at line 3, column 20. Expected a different token.",
       "boundaries": {
         "start": {
           "line": 3,

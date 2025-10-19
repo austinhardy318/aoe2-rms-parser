@@ -1,15 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["esnext"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "commonjs",
     "strict": true,
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
-    "outDir": "../lib/",
+    "outDir": "../dist/",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "newLine": "LF"
+    "newLine": "LF",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
   "include": [
     "./**/*.ts"

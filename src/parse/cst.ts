@@ -113,7 +113,7 @@ function partsToCstNodes (parts: RecursiveArray<CstNode | RuleNode | Token | nul
     if ('children' in part && !('childrenByType' in part)) return nodeToCst(part)
     else return part
   })
-  return flattenDeep(convertedParts) as CstNodeChild[]
+  return flattenDeep(convertedParts as any) as CstNodeChild[]
 }
 
 function simpleCstNode (parts: any[], type: string): CstNode {

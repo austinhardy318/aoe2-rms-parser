@@ -3,7 +3,7 @@ import { Token } from './parse'
 const EMPTY_TOKEN: Token = {
   value: '',
   offset: 0,
-  lineBreaks: false,
+  lineBreaks: 0,
   line: 1,
   col: 1,
   text: ''
