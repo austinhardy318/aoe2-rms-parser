@@ -21,8 +21,6 @@
     "docker:test": "docker-compose run test",
     "docker:dev": "docker-compose run dev",
     "health-check": "node scripts/health-check.js",
-    "test:parser": "node scripts/test-parser.js",
-    "test:vscode": "node scripts/test-vscode-integration.js",
     "prepublishOnly": "npm run clean && npm run build && npm run test && npm run health-check"
   },
   "repository": {
