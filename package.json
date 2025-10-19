@@ -1,6 +1,6 @@
 {
   "name": "aoe2-rms-parser",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Modern parser and linter for Age of Empires 2 Random Map Scripts",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
