@@ -75,6 +75,7 @@ export default [
       '@typescript-eslint/no-var': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
       'no-var': 'off'
     }
   },

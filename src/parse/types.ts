@@ -1,20 +1,20 @@
 export interface NearleyRule {
   name: string;
   symbols: NearleySymbol[];
-  postprocess?: (d: any[], loc?: number, reject?: {}) => any;
+  postprocess?: (d: unknown[], loc?: number, reject?: () => void) => unknown;
 }
 
-export type NearleySymbol = string | { literal: any } | { test: (token: any) => boolean };
+export type NearleySymbol = string | { literal: string | number } | { test: (token: NearleyToken) => boolean };
 
 export interface NearleyToken {
-  value: any;
-  [key: string]: any;
+  value: string | number;
+  [key: string]: unknown;
 }
 
 export interface NearleyLexer {
-  reset: (chunk: string, info: any) => void;
+  reset: (chunk: string, info: Record<string, unknown>) => void;
   next: () => NearleyToken | undefined;
-  save: () => any;
+  save: () => Record<string, unknown>;
   formatError: (token: never) => string;
   has: (tokenType: string) => boolean;
 }

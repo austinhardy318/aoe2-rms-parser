@@ -1,6 +1,6 @@
 import { CstNode } from './cst'
 
-export interface AstNode extends CstNode {}
+export type AstNode = CstNode
 
 export interface Script extends AstNode {
   type: 'Script',

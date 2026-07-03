@@ -203,6 +203,9 @@ cd aoe2-rms-parser
 # Install dependencies
 npm install
 
+# Git hooks (lint all TypeScript files before each commit)
+npm run prepare
+
 # Run tests
 npm test
 

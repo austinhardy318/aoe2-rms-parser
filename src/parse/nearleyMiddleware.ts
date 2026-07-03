@@ -12,9 +12,9 @@ import { NearleyRule } from './types'
 export function ruleNodesMiddleware (rules: NearleyRule[]): NearleyRule[] {
   return rules.map(cloneDeep).map(rule => {
     if (!rule.name.includes('$')) {
-      rule.postprocess = (parts: any[]): RuleNode => ({
+      rule.postprocess = (parts: unknown[]): RuleNode => ({
         type: rule.name,
-        children: parts
+        children: parts as RuleNodeChildren
       })
     }
     return rule

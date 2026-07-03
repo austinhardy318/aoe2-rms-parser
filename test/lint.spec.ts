@@ -2,8 +2,8 @@ import { readdirSync, readFileSync } from 'fs'
 import { basename, extname, resolve } from 'path'
 import { lint, parse } from '../dist'
 
-const readSampleFile = (name: string) => readFileSync(resolve(__dirname, 'samples', name), 'utf8')
-const readSample = (name: string) => ({
+const readSampleFile = (name: string): string => readFileSync(resolve(__dirname, 'samples', name), 'utf8')
+const readSample = (name: string): { name: string, script: string, correctErrors: unknown } => ({
   name,
   script: readSampleFile(`${name}.rms`),
   correctErrors: JSON.parse(readSampleFile(`generated/${name}.lint-errors.json`))

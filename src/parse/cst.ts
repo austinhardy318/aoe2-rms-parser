@@ -3,7 +3,9 @@ import { Token as MooToken } from 'moo'
 import { RuleNodeChildren, RuleNode } from './nearleyMiddleware'
 import { isToken, getChildNodes, getNode } from '../treeHelpers'
 
-export function toCst (root: RuleNode) {
+type CstParts = RecursiveArray<CstNode | RuleNode | Token | null>
+
+export function toCst (root: RuleNode): CstNode {
   return nodeToCst(root) as CstNode
 }
 
@@ -90,7 +92,7 @@ const cstVisitorMap: { [x: string]: (parts: RuleNodeChildren) => CstNode | CstNo
   __: parts => unwrapTokens(parts)
 }
 
-function nodeToCst ({ type, children }: RuleNode) {
+function nodeToCst ({ type, children }: RuleNode): CstNode | CstNodeChild[] {
   return cstVisitorMap[type](children)
 }
 
@@ -107,16 +109,16 @@ export interface CstNode {
 
 export type CstNodeChild = CstNode | Token
 
-function partsToCstNodes (parts: RecursiveArray<CstNode | RuleNode | Token | null>) {
+function partsToCstNodes (parts: CstParts): CstNodeChild[] {
   const flatParts = flattenParts(parts)
-  const convertedParts = flatParts.map(part => {
-    if ('children' in part && !('childrenByType' in part)) return nodeToCst(part)
-    else return part
+  const convertedParts = flatParts.map((part): CstNodeChild | CstNodeChild[] => {
+    if ('children' in part && !('childrenByType' in part)) return nodeToCst(part) as CstNode
+    return part as CstNodeChild
   })
-  return flattenDeep(convertedParts as any) as CstNodeChild[]
+  return flattenDeep(convertedParts) as CstNodeChild[]
 }
 
-function simpleCstNode (parts: any[], type: string): CstNode {
+function simpleCstNode (parts: CstParts, type: string): CstNode {
   const node = { type } as CstNode
   const children = partsToCstNodes(parts).map(x => setNodeParent(x, node))
   const childrenByType = groupBy(children, 'type') as { [x: string]: CstNodeChild[] }
@@ -127,21 +129,43 @@ function simpleCstNode (parts: any[], type: string): CstNode {
   return node
 }
 
-function setNodeParent (node: CstNodeChild, parent: CstNode) {
+function setNodeParent (node: CstNodeChild, parent: CstNode): CstNodeChild {
   Object.defineProperty(node, 'parent', { enumerable: false, configurable: true, value: parent })
   return node
 }
 
-function visitGenericIf ([ruleNode]: any) {
-  if (ruleNode.length === 1) ruleNode = ruleNode[0]
-  const [ifToken, ws1, condition, ws2, statements, elseifs, elseStuff, endifToken] = ruleNode
+type ElseIfParts = [Token, Token | null, RuleNodeChildren, Token | null, ...RuleNodeChildren[]]
+type ElseParts = [Token, Token | null, ...RuleNodeChildren[]]
+type ChanceParts = [Token, Token | null, Token, Token | null, ...RuleNodeChildren[]]
+type IfParts = [
+  Token,
+  Token | null,
+  RuleNodeChildren,
+  Token | null,
+  RuleNodeChildren,
+  ElseIfParts[],
+  ElseParts | null,
+  Token
+]
+type RandomParts = [
+  Token,
+  Token | null,
+  RuleNodeChildren,
+  ChanceParts[],
+  Token
+]
+
+function visitGenericIf ([ruleNode]: RuleNodeChildren): CstNode {
+  let parts = ruleNode as unknown as unknown[]
+  if (parts.length === 1) parts = parts[0] as unknown[]
+  const [ifToken, ws1, condition, ws2, statements, elseifs, elseStuff, endifToken] = parts as IfParts
 
   return simpleCstNode([
     ifToken, ws1, simpleCstNode([condition], 'ConditionExpression'),
     simpleCstNode([ws2, statements], 'StatementsBlock'),
-    elseifs.map(([elseifToken, ws1, condition, ws2, ...statements]: any) => simpleCstNode([
-      elseifToken, ws1, simpleCstNode([condition], 'ConditionExpression'), ws2,
-      simpleCstNode(statements, 'StatementsBlock')
+    elseifs.map(([elseifToken, elseifWs1, elseifCondition, elseifWs2, ...elseifStatements]: ElseIfParts) => simpleCstNode([
+      elseifToken, elseifWs1, simpleCstNode([elseifCondition], 'ConditionExpression'), elseifWs2,
+      simpleCstNode(elseifStatements, 'StatementsBlock')
     ], 'ElseIf')),
     elseStuff ? simpleCstNode([
       elseStuff[0], elseStuff[1], simpleCstNode(elseStuff.slice(2), 'StatementsBlock')
@@ -150,15 +174,16 @@ function visitGenericIf ([ruleNode]: any) {
   ], 'If')
 }
 
-function visitGenericRandom ([ruleNode]: any) {
-  if (ruleNode.length === 1) ruleNode = ruleNode[0]
-  const [startToken, ws, comments, chances, endToken] = ruleNode
+function visitGenericRandom ([ruleNode]: RuleNodeChildren): CstNode {
+  let parts = ruleNode as unknown as unknown[]
+  if (parts.length === 1) parts = parts[0] as unknown[]
+  const [startToken, ws, comments, chances, endToken] = parts as RandomParts
   return simpleCstNode([
     startToken, ws,
     simpleCstNode([
       comments,
-      chances.map(([chanceToken, ws1, percent, ws2, ...statements]: any) => simpleCstNode([
-        chanceToken, ws1, percent, ws2, simpleCstNode(statements, 'StatementsBlock')
+      chances.map(([chanceToken, chanceWs1, percent, chanceWs2, ...statements]: ChanceParts) => simpleCstNode([
+        chanceToken, chanceWs1, percent, chanceWs2, simpleCstNode(statements, 'StatementsBlock')
       ], 'Chance'))
     ], 'StatementsBlock'),
     endToken
@@ -170,6 +195,6 @@ function unwrapTokens (parts: RuleNodeChildren): Token[] {
   return flattenDeep(onlyTokens) as Token[]
 }
 
-function flattenParts (parts: RuleNodeChildren) {
+function flattenParts (parts: RuleNodeChildren): (RuleNode | Token)[] {
   return flattenDeep(parts).filter(p => p !== null) as (RuleNode | Token)[]
 }

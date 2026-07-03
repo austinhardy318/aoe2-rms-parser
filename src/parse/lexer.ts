@@ -2,11 +2,13 @@ import { states, Token } from 'moo'
 import { getBoundaries, TextSpanError } from '../tokenHelpers'
 
 export interface Lexer {
-  reset: (chunk: string, info: any) => void
+  reset: (chunk: string, info: Record<string, unknown>) => void
   next: () => Token | undefined
-  save: () => any
+  save: () => Record<string, unknown>
   formatError: (token: Token) => string
   has: (tokenType: string) => boolean
+  line?: number
+  col?: number
 }
 
 export const lexer = states({
@@ -28,14 +30,16 @@ export const lexer = states({
     startRandom: 'start_random',
     percentChance: 'percent_chance',
     endRandom: 'end_random',
-    int: /\-?[0-9]+\b/,
-    identifier: /[^\s!@#\$%\^&\*\(\)\-\+=;:'"<>{}\[\]\?\/\\][^\s;'"<>{}\[\]\/\\]*/,
-    invalid: { error: true } as any
+    int: /-?[0-9]+\b/,
+    // Brackets are escaped to keep the regex literal unambiguous for tooling.
+    // eslint-disable-next-line no-useless-escape -- literal [ and ] in identifier charset
+    identifier: /[^\s!@#%^&*()+=;:'"<>{}\[\]?/\\-][^\s;'"<>{}\[\]/\\]*/,
+    invalid: { error: true } as { error: true }
   },
   comment: {
     commentStart: { match: '/*', push: 'comment' },
     commentText: { match: /(?:(?!\*\/|\/\*)[\s\S])+/, lineBreaks: true },
-    commentEnd: { match: '*/', pop: true } as any
+    commentEnd: { match: '*/', pop: 1 }
   }
 })
 

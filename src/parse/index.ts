@@ -11,9 +11,28 @@ export * from './astTypes'
 export { Token, CstNode, CstNodeChild } from './cst'
 export { TextSpanError } from '../tokenHelpers'
 
+type CompiledGrammar = Parameters<typeof Grammar.fromCompiled>[0]
+
 const wrappedGrammar = { ...grammar, ParserRules: ruleNodesMiddleware(grammar.ParserRules) }
 // TODO: Fix nearley.Grammar.fromCompiled() TypeScript definition.
-const compiledGrammar: Grammar = (Grammar.fromCompiled as any)(wrappedGrammar)
+const compiledGrammar: Grammar = Grammar.fromCompiled(wrappedGrammar as CompiledGrammar)
+
+interface LexerState {
+  line: number
+  col: number
+}
+
+function isLexerState (lexer: unknown): lexer is LexerState {
+  return typeof lexer === 'object' && lexer !== null && 'line' in lexer && 'col' in lexer
+}
+
+function isTextSpanError (error: unknown): error is TextSpanError {
+  return typeof error === 'object' && error !== null && 'boundaries' in error
+}
+
+function isTokenError (error: unknown): error is Error & { token: Token } {
+  return typeof error === 'object' && error !== null && 'token' in error
+}
 
 export function parse (input: string): { errors: TextSpanError[], ast?: Script } {
   const parser = new Parser(compiledGrammar)
@@ -25,7 +44,10 @@ export function parse (input: string): { errors: TextSpanError[], ast?: Script }
         'not your script. Please report this issue along with the script that caused it.')
     }
     if (parsings.length === 0) {
-      const { line, col } = parser.lexer as any
+      if (!isLexerState(parser.lexer)) {
+        throw new Error('Unexpected end of input.')
+      }
+      const { line, col } = parser.lexer
       throw {
         name: 'ParseError',
         message: 'Unexpected end of input.',
@@ -39,18 +61,18 @@ export function parse (input: string): { errors: TextSpanError[], ast?: Script }
       ast: parsings[0],
       errors: []
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     let errorWithTextSpan: TextSpanError
-    if (error && error.boundaries) {
+    if (isTextSpanError(error)) {
       errorWithTextSpan = error
-    } else if (error && error.token && error.token.type === 'invalid') {
+    } else if (isTokenError(error) && error.token.type === 'invalid') {
       errorWithTextSpan = formatLexError(error)
-    } else if (error && error.token) {
+    } else if (isTokenError(error)) {
       errorWithTextSpan = formatParseError(error)
     } else {
       errorWithTextSpan = {
         name: 'ParseError',
-        message: error && error.message,
+        message: error instanceof Error ? error.message : 'Unknown parse error.',
         boundaries: {
           start: { line: 1, col: 0 },
           end: { line: 1, col: 1 }
