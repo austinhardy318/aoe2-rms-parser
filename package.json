@@ -22,7 +22,7 @@
     "docker:dev": "docker-compose run dev",
     "health-check": "node scripts/health-check.js",
     "prepublishOnly": "npm run clean && npm run build && npm run test && npm run health-check",
-    "prepare": "husky"
+    "prepare": "node scripts/prepare-husky.js"
   },
   "repository": {
     "type": "git",
