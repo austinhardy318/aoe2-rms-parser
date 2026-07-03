@@ -190,7 +190,7 @@ Small RMS file (1KB): ~0.05ms parse time
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - Docker (optional, for containerized development)
 
 ### Setup

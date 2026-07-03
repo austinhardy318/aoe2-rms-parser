@@ -1,10 +1,10 @@
 import { Token, CstNode, CstNodeChild } from './cst'
 import { getChildNode, getToken, getChildNodes, getTokens } from '../treeHelpers'
-import { AstNode, Script, IfStatement, ElseIfStatement, RandomStatement, ChanceStatement, SectionStatement,
+import { AstNode, Script, Statement, IfStatement, ElseIfStatement, RandomStatement, ChanceStatement, SectionStatement,
   AttributeStatement, DeclarationStatement, IncludeDrsStatement, MultilineComment,
   CommandStatement, ConditionalCommandStatement, RandomCommandStatement } from './astTypes'
 
-export function toAst (root: CstNode) {
+export function toAst (root: CstNode): Script {
   return nodeToAst(root) as Script
 }
 
@@ -38,7 +38,7 @@ const astVisitorMap: { [x: string]: (node: CstNode) => AstNode } = {
 
     return node
 
-    function getCondition (node: CstNode) {
+    function getCondition (node: CstNode): string {
       return getToken(getChildNode(node, 'ConditionExpression', true), undefined, true).value
     }
   },
@@ -131,7 +131,7 @@ const astVisitorMap: { [x: string]: (node: CstNode) => AstNode } = {
   } as MultilineComment)
 }
 
-function visitCommandBody (command: CommandStatement | ConditionalCommandStatement | RandomCommandStatement, body: CstNode) {
+function visitCommandBody (command: CommandStatement | ConditionalCommandStatement | RandomCommandStatement, body: CstNode): void {
   addStatements(command, 'statements', body, true)
 
   const preCommentsContainer = getChildNode(body, 'PreCurlyComments')
@@ -141,21 +141,27 @@ function visitCommandBody (command: CommandStatement | ConditionalCommandStateme
   }
 }
 
-function nodeToAst (node: CstNode) {
+function nodeToAst (node: CstNode): AstNode {
   return astVisitorMap[node.type](node)
 }
 
-function addStatements (targetAstNode: any, propName: string, sourceCstNode: CstNode, addEmptyArrayIfNone = false) {
-  const statements = getChildNodes(getChildNode(sourceCstNode, 'StatementsBlock', true)).map(nodeToAst)
-  if (statements.length || addEmptyArrayIfNone) targetAstNode[propName] = statements
+function addStatements (
+  targetAstNode: object,
+  propName: string,
+  sourceCstNode: CstNode,
+  addEmptyArrayIfNone = false
+): void {
+  const statements = getChildNodes(getChildNode(sourceCstNode, 'StatementsBlock', true)).map(nodeToAst) as Statement[]
+  const target = targetAstNode as Record<string, Statement[] | undefined>
+  if (statements.length || addEmptyArrayIfNone) target[propName] = statements
 }
 
-function getNameAndArgs (node: CstNode) {
+function getNameAndArgs (node: CstNode): { name: string, args: (string | number)[] } {
   const [name, ...args] = node.children.filter(isValueToken).map(getTokenValue)
   return { name: name as string, args }
 }
 
-function getTokenValue (token: Token) {
+function getTokenValue (token: Token): string | number {
   if (token.type === 'int') return parseInt(token.value, 10)
   else return token.value
 }

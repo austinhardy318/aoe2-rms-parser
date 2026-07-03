@@ -1,5 +1,5 @@
 # Multi-stage build for aoe2-rms-parser
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 # Install dependencies needed for native modules
 RUN apk add --no-cache python3 make g++
@@ -33,7 +33,7 @@ RUN npm install
 CMD ["npm", "test"]
 
 # Production stage
-FROM node:20-alpine AS production
+FROM node:22-alpine AS production
 WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./

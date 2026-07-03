@@ -63,6 +63,12 @@ export default [
     },
   },
   {
+    files: ['src/lib/generate.ts'],
+    rules: {
+      'no-console': 'off'
+    }
+  },
+  {
     files: ['src/parse/grammar.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',

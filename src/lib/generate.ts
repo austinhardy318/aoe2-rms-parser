@@ -60,7 +60,7 @@ function astToJson (ast: Script): string {
   return JSON.stringify(definitions, null, 2)
 }
 
-function addDefinition (definitions: Definitions, { name, value }: DeclarationStatement, section?: string, comment?: string) {
+function addDefinition (definitions: Definitions, { name, value }: DeclarationStatement, section?: string, comment?: string): void {
   const type = (section || 'GENERAL').toLowerCase()
   definitions[type].push({
     name: (!name || name === '__noname') ? undefined : name,
